@@ -268,7 +268,7 @@ public class PlayerController : MonoBehaviour, ILiving
         SetHealthConsumable(GetHealthConsumable() - newConsumable);
         
         // Spawn particles and play audio.
-        Instantiate(HealParticles, transform.position, Quaternion.identity);
+        Instantiate(HealParticles, transform, false);
         HealAudio.Play();
         
     }

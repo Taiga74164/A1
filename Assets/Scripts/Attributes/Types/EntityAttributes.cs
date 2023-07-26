@@ -39,6 +39,7 @@ public class HealthAttribute : Attribute
 
     /// <summary>
     /// Avoid hardcoding the value of the health attribute.
+    /// POLYMORPHISM
     /// </summary>
     public override void Update()
     {

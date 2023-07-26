@@ -76,7 +76,7 @@ public class HealingUnitController : MonoBehaviour
     {
         while (true)
         {
-            var playerHealthPercent = Player.GetHealth() / Player.GetMaxHealth() * 100.0f;
+            var playerHealthPercent = Player.Health / Player.GetMaxHealth() * 100.0f;
             if (playerHealthPercent >= 100.0f)
             {
                 // Unsubscribe from the player's heal event.
@@ -112,7 +112,7 @@ public class HealingUnitController : MonoBehaviour
             transform.position = Vector3.Lerp(initialPosition, targetPosition, (elapsedTime / HealingTime) * TravelSpeed);
             
             // Heal the player.
-            Player.SetHealth(Player.GetHealth() + HealingAmount * Time.deltaTime);
+            Player.Health = Player.Health + HealingAmount * Time.deltaTime;
 
             // Increment the elapsed time.
             elapsedTime += Time.deltaTime;

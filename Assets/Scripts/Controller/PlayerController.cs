@@ -46,18 +46,18 @@ public class PlayerController : MonoBehaviour, ILiving
 
     public float GetMaxHealth() => Mathf.Floor((float) PlayerAttributes.GetAttribute(Attributes.MaxHealthAttributes).GetValue());
 
-    public float GetHealth() => Mathf.Floor((float) PlayerAttributes.GetAttribute(Attributes.HealthAttributes).GetValue());
-
-    public void SetHealth(float value)
+    // ENCAPSULATION
+    public float Health
     {
-        // Set the player's health to the max health if the value is greater than the max health.
-        if (value >= GetMaxHealth())
+        get => Mathf.Floor((float) PlayerAttributes.GetAttribute(Attributes.HealthAttributes).GetValue());
+        set
         {
-            PlayerAttributes.GetAttribute(Attributes.HealthAttributes).SetValue(GetMaxHealth());
-            return;
+            // Set the player's health to the max health if the value is greater than the max health.
+            if (value >= GetMaxHealth())
+                PlayerAttributes.GetAttribute(Attributes.HealthAttributes).SetValue(GetMaxHealth());
+            else
+                PlayerAttributes.GetAttribute(Attributes.HealthAttributes).SetValue(value);
         }
-
-        PlayerAttributes.GetAttribute(Attributes.HealthAttributes).SetValue(value);
     }
 
     public float GetHealthConsumable() => Mathf.Floor((float) PlayerAttributes.GetAttribute(Attributes.HealthConsumableAttributes).GetValue());
@@ -203,8 +203,8 @@ public class PlayerController : MonoBehaviour, ILiving
     /// </summary>
     private void HandlePlayerHealth()
     {
-        Mathf.Clamp(GetHealth(), 0, GetMaxHealth());
-        if (GetHealth() > 0) 
+        Mathf.Clamp(Health, 0, GetMaxHealth());
+        if (Health > 0) 
             return;
         
         Debug.Log("Player died. Restarting game.");
@@ -233,11 +233,12 @@ public class PlayerController : MonoBehaviour, ILiving
     
     #region Interface
 
+    // ABSTRACTION
     public void Damage(/*int value*/)
     {
         // Get the calculated health value.
-        var newHealth = GetHealth() - PlayerData.DamageDealt;
-        SetHealth(newHealth);
+        var newHealth = Health - PlayerData.DamageDealt;
+        Health = newHealth;
 
         // Display Damage UI.
         World.DisplayDamage(transform, PlayerData.DamageDealt);
@@ -249,6 +250,7 @@ public class PlayerController : MonoBehaviour, ILiving
     
     //void Damage(int value, Vector3 direction)
     
+    // ABSTRACTION
     public void Heal(/*int value*/)
     {
         // Check if consumable is available.
@@ -256,12 +258,12 @@ public class PlayerController : MonoBehaviour, ILiving
             return;
         
         // Check if the player is at max health.
-        if (GetHealth() >= GetMaxHealth())
+        if (Health >= GetMaxHealth())
             return;
         
         // Get the calculated health value.
-        var newHealth = GetHealth() + PlayerData.HealAmount;
-        SetHealth(newHealth > GetMaxHealth() ? GetMaxHealth() : newHealth);
+        var newHealth = Health + PlayerData.HealAmount;
+        Health = newHealth > GetMaxHealth() ? GetMaxHealth() : newHealth;
         
         // Set the new consumable value.
         var newConsumable = PlayerData.HealAmount * 10.0f;

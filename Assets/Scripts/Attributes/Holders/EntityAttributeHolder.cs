@@ -4,6 +4,7 @@ using UnityEngine;
 
 /// <summary>
 /// An entity-specific attribute holder.
+/// INHERITANCE
 /// </summary>
 public class EntityAttributeHolder : AttributeHolder
 {

@@ -5,15 +5,24 @@ using UnityEngine;
 
 public class Collectible : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] private int _regenAmount = 10;
+    
+    private void OnTriggerEnter(Collider other)
     {
+        if (!other.gameObject.CompareTag("Player"))
+            return;
         
+        // Regenerate the player's health consumable.
+        var playerController = other.GetComponent<PlayerController>();
+        playerController.SetHealthConsumable(playerController.GetHealthConsumable() + _regenAmount);
+        
+        // Destroy once collected
+        Destroy(gameObject);
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        
+        // Rotate the object to make it look cool.
+        transform.Rotate(new Vector3(0f, 1f));
     }
 }
